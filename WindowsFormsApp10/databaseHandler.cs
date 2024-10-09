@@ -34,6 +34,8 @@ namespace WindowsFormsApp10
                 string query = $"select * from {tableName}";
                 MySqlCommand command = new MySqlCommand(query, connection);
                 MySqlDataReader read = command.ExecuteReader();
+                sigmak.Clear();
+
                 while (read.Read())
                 {
                     sigma onesigma = new sigma();
@@ -45,7 +47,6 @@ namespace WindowsFormsApp10
                 read.Close();
                 command.Dispose();
                 connection.Close();
-                MessageBox.Show("Sikeres beolvasas");
             }
             catch (Exception e)
             {
@@ -65,7 +66,25 @@ namespace WindowsFormsApp10
                 connection.Close();
                 MessageBox.Show("Sikeres törlés");
             }
-            catch (Exception e)
+            catch (Exception)
+            {
+                MessageBox.Show("Sikertelen törlés");
+            }
+        }
+        public void delAll()
+        {
+            try
+            {
+                connection.Open();
+                string query = $"DELETE FROM {tableName} *";
+                sigmak.Clear();
+                MySqlCommand command = new MySqlCommand(query, connection);
+                command.ExecuteNonQuery();
+                command.Dispose();
+                connection.Close();
+                MessageBox.Show("Sikeres törlés");
+            }
+            catch (Exception)
             {
                 MessageBox.Show("Sikertelen törlés");
             }
@@ -75,7 +94,7 @@ namespace WindowsFormsApp10
             try
             {
                 connection.Open();
-                string query = $"INSERT INTO {tableName} (nev, rizzlevel) VALUES ('{sigma.nev}','{sigma.rizzlevel}'";
+                string query = $"INSERT INTO {tableName} (nev, rizzlevel)"+ $"VALUES ('{sigma.nev}','{sigma.rizzlevel}')";
                 MySqlCommand command = new MySqlCommand(query, connection);
                 command.ExecuteNonQuery();
                 command.Dispose();
